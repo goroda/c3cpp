@@ -1,7 +1,7 @@
 # c3cpp
 C++11 wrapper for the compressed-continuous-computation (c3) [library](https://github.com/goroda/compressed-continuous-computation)
 
-## Installation instructions
+## Installation 
 
 1. Install c3 and cd into the directory
 ```
@@ -26,6 +26,6 @@ cd c3cpp
 
 ## LICENSE
 BSD-3 
-## Author
 
+## Author
 Alex Gorodetsky alex@alexgorodetsky.com
