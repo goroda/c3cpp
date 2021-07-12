@@ -1,5 +1,5 @@
-CXX = g++-8
-# CC = gcc
+CXX = g++
+# CXX = g++-8
 CFLAGS = -g -Wall -O3 -std=c++11 -fPIC
 
 LLOC = ../../c3/build/c3 
@@ -7,11 +7,15 @@ LIB = c3
 
 TARGET = libc3cpp.so
 
-LALOC = /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A
-# BLAS = libBLAS.dylib
-# LAPACK = libLAPACK.dylib
-BLAS = BLAS
-LAPACK = LAPACK
+# the following works on a mac
+# LALOC = /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A
+# BLAS = BLAS
+# LAPACK = LAPACK
+
+LALOC = /usr/lib/x86_64-linux-gnu
+BLAS = blas
+LAPACK = lapack
+
 
 # temp : main.o function_train.o approx_opts.o functions.o utils.o 
 # 	$(CXX) $(CFLAGS) -o $(TARGET) main.o function_train.o approx_opts.o utils.o -L$(LLOC) -l$(LIB)
