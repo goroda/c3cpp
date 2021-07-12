@@ -1,0 +1,5 @@
+*~
+c3cpp_test
+*.so
+*.o
+*.dSYM
