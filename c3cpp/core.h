@@ -8,7 +8,7 @@ namespace c3core
         enum poly_type {LEGENDRE, CHEBYSHEV, HERMITE, STANDARD, FOURIER};
         enum C3ATYPE { CROSS, REGRESS, C3UNSPEC };
         enum function_class {PIECEWISE, POLYNOMIAL, CONSTELM, LINELM, KERNEL};
-        
+        enum c3opt_alg {BFGS, LBFGS, BATCHGRAD, BRUTEFORCE, SGD};
 
         struct OpeOpts;        
         struct OneApproxOpts;
@@ -17,6 +17,7 @@ namespace c3core
         struct FunctionTrain;
         struct Fwrap;
         struct FunctionMonitor;
+        struct c3Opt;
         
         // Not sure about below
         void function_train_sobol_sensitivities(const struct FunctionTrain *,double*,double*,size_t);
@@ -62,7 +63,7 @@ namespace c3core
         struct MultiApproxOpts * c3approx_get_approx_args(const struct C3Approx *);
 
 
-                size_t function_train_get_dim(const struct FunctionTrain *);
+        size_t function_train_get_dim(const struct FunctionTrain *);
         size_t function_train_get_nparams(const struct FunctionTrain *);
         size_t * function_train_get_ranks(const struct FunctionTrain *);
         double function_train_get_avgrank(const struct FunctionTrain *);
@@ -101,6 +102,8 @@ namespace c3core
         struct FunctionTrain *
         function_train_round(struct FunctionTrain *, double,struct MultiApproxOpts *);        
 
+        void c3axpy (double a, struct FunctionTrain *x, struct FunctionTrain **y, double epsilon, struct MultiApproxOpts * opts);
+        
         // function wrapping
         struct Fwrap * fwrap_create(size_t, const char *);
         void fwrap_set_fvec(struct Fwrap*,int(*)(size_t,const double*,double*,void*),void*);
@@ -111,9 +114,17 @@ namespace c3core
         void function_monitor_free(struct FunctionMonitor *);
         double function_monitor_eval(const double *, void *);
         struct FunctionMonitor * 
-        function_monitor_initnd( double (*f)(const double *, void *), void *, size_t dim, size_t
-                                 table_size);
-        
+        function_monitor_initnd( double (*f)(const double *, void *), void *, size_t dim, size_t table_size);
+
+        // optimizer
+        struct c3Opt * c3opt_create(enum c3opt_alg);
+        void c3opt_set_relftol(struct c3Opt *, double);
+        void c3opt_set_gtol(struct c3Opt *, double);
+        void c3opt_set_verbose(struct c3Opt *, int);
+        void c3opt_set_maxiter(struct c3Opt *, size_t);
+        void c3opt_ls_set_maxiter(struct c3Opt *, size_t);
+        void c3opt_set_absxtol(struct c3Opt *, double);
+        void c3opt_free(struct c3Opt *);
     }
 
 

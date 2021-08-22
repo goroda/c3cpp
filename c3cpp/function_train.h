@@ -7,6 +7,7 @@
 
 namespace c3
 {
+        
     class FunctionTrain
     {
     public: 
@@ -59,6 +60,9 @@ namespace c3
         FunctionTrain integrate_weighted_subset(size_t ndim_contract, size_t *dims_contract) const;
 
         int save(std::string filename) const;
+
+        // this = a * x + this
+        void axpy(double a, const FunctionTrain & x, double epsilon, const MultiApproxOpts &opts);
     };
 }
 

@@ -5,6 +5,6 @@
 #include "approx_opts.h"
 #include "functions.h"
 #include "function_train.h"
-
+#include "optimize.hpp"
 
 #endif

@@ -97,3 +97,8 @@ FunctionTrain c3::FunctionTrain::integrate_weighted_subset(size_t ndim_contract,
 int c3::FunctionTrain::save(std::string filename) const {
     return c3core::function_train_save(ft, const_cast<char*>(filename.c_str()));
 }
+
+void c3::FunctionTrain::axpy(double a, const FunctionTrain & x, double epsilon, const MultiApproxOpts &opts) {
+
+    c3core::c3axpy(a, x.ft, &ft, epsilon, opts->opts);
+}

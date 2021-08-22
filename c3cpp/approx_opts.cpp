@@ -66,20 +66,23 @@ size_t c3::OneApproxOpts::get_nparams() const {
     return c3core::one_approx_opts_get_nparams(opts);
 }
 
-// // Copy Constructor: initialize previously uninitialized
-// c3::MultiApproxOpts::MultiApproxOpts(const c3::MultiApproxOpts &other) {
-//     std::cout << "MultiApproxOpts Copy" << std::endl;
-//     NotImplemented e;
-//     throw e;
-// }
+// Copy Constructor: initialize previously uninitialized
+c3::MultiApproxOpts::MultiApproxOpts(const c3::MultiApproxOpts &other) {
+    opts = other.opts;
+    alloc = false;
+}
 
 
-// // Copy assignment operator: replace previously initialized
-// c3::MultiApproxOpts& MultiApproxOpts::operator=(const c3::MultiApproxOpts &other){
-//     std::cout << "MultiApproxOpts Assignment" << std::endl;
-//     NotImplemented e;
-//     throw e;
-// }
+// Copy assignment operator: replace previously initialized
+c3::MultiApproxOpts& MultiApproxOpts::operator=(const c3::MultiApproxOpts &other){
+
+    if (alloc == true) {
+        c3core::multi_approx_opts_free(opts);
+        alloc = false;
+    }
+    opts = other.opts;
+    return *this;
+}
 
 c3::MultiApproxOpts::MultiApproxOpts(size_t dim) {
     opts = c3core::multi_approx_opts_alloc(dim);

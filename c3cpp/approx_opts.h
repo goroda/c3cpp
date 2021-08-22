@@ -107,10 +107,10 @@ namespace c3
 
         // The below constructurs employ shallow copies, not deep
         // Copy Constructor: initialize previously uninitialized
-        MultiApproxOpts(const MultiApproxOpts &other) = delete;
+        MultiApproxOpts(const MultiApproxOpts &other);
 
         // Copy assignment operator: replace previously initialized
-        MultiApproxOpts& operator=(const MultiApproxOpts &other) = delete;
+        MultiApproxOpts& operator=(const MultiApproxOpts &other);
 
         // Move constructor
         MultiApproxOpts(MultiApproxOpts &&other);
