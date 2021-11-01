@@ -12,7 +12,7 @@ The external pre-requisites are any BLAS and LAPACK implmentation
 
 ### C3 and C3CPP installation instructions
 
-1. Install c3 and ~cd~ into the directory
+1. Install c3 and `cd` into the directory
 ```
 git clone https://github.com/goroda/compressed-continuous-computation c3
 cd c3
@@ -38,13 +38,24 @@ make -j4
 ```
 6. Run the examples in `build/examples`
 
-## Examples and tests
+## Namespaces
 
-Examples are provided in the `examples` subdirectory. Here we describe some of the main ideas
+This wrapper provides two namespaces
+
+1. `c3` which provides the C++ wrappers, in [c3_cpp.h](c3cpp/c3_cpp.h)
+2. `c3core` which provides the C signatures for the wrapped functions, in [core.h](c3cpp/core.h)
+
+## Examples
+
+Examples are provided in the [examples/](examples) subdirectory. Here we describe some of the main ideas
 
 ### `ft_cross_adapt`
 
-This example provides the basic approach to generating an approximation to a blackbox function. The code is developed to wrap functions with the following signature
+This example provides the basic approach to generating an approximation to a black-box function. The output to screen from this example are the messages obtained by cross approximation with a verbose setting. This example also has an assertion that indicates things are working propoerly.
+
+
+
+The code is developed to wrap functions with the following signature
 
 ```
 int sin10d(size_t n, const double * x, double * out, void * args)
@@ -65,38 +76,38 @@ double lb = 0.0;
 double ub = 1.0;
 c3::OpeOpts opts(c3core::LEGENDRE);
 opts.set_lb(lb);
- opts.set_ub(ub);
+opts.set_ub(ub);
 ```
 
 #### Step 3: setup the multivariate approximation arguments
 Here we simultaneously assign the options above to each dimension, and provide a linearly spaced set of points of size `init_rank` at which to begin the sampling
 ```
-    c3::OneApproxOpts qmopts(opts);
-    c3::C3Approx approx(c3core::CROSS, dim);
-    int verbose = 1;
-    size_t init_rank = 2;
-    double ** start = new double*[dim];
-    for (size_t ii = 0; ii < dim; ii++) {
-        start[ii] = new double[dim];
-        linspace(lb, ub, init_rank, start[ii]);
-        approx.set_approx_opts_dim(ii, qmopts);
-    }
+c3::OneApproxOpts qmopts(opts);
+c3::C3Approx approx(c3core::CROSS, dim);
+int verbose = 1;
+size_t init_rank = 2;
+double ** start = new double*[dim];
+for (size_t ii = 0; ii < dim; ii++) {
+    start[ii] = new double[dim];
+    linspace(lb, ub, init_rank, start[ii]);
+    approx.set_approx_opts_dim(ii, qmopts);
+}
 ```
 
 #### Step 4: Initialize the cross approximation arguments
 We initialize with the samples located in `start` and set some tolerances
 ```
-    approx.init_cross(init_rank, verbose, start);
-    approx.set_cross_tol(1e-5);
-    approx.set_cross_maxiter(10);
+approx.init_cross(init_rank, verbose, start);
+approx.set_cross_tol(1e-5);
+approx.set_cross_maxiter(10);
  ```
  
 #### Step 5: Generate the approximation
 This is one function call to the `FunctionTrain` constructor
 ```
-    c3::FunctionTrain ft(approx, fw, 0);
+c3::FunctionTrain ft(approx, fw, 1); 
 ```
-
+The third argument should be 1 for rank adaptation, and 0 for no rank adaptation.
 #### Step 6: Computation
 Now we are ready to compute with the function train. This particular example
 performs integration
@@ -104,6 +115,36 @@ performs integration
 double intval = ft.integrate();
 ```
 
+### `sobol_indices`
+
+This example shows how to get total and main effect sensitivity indices. There is no output to screen, but there are assertions that indicate things are working properly.
+
+#### Step 1: approximate the function
+This is the same procedure as shown in the `ft_cross_adapt` example
+
+
+#### Step 2: Compute the SobolIndices class and extract total and main effects
+
+To compute the SobolIndices class is a single function call
+```
+c3::SobolIndices sobol(ft, dim); // second argument is the maximum order of effects
+```
+
+To compute variance you do
+```
+double var = sobol.get_variance();
+```
+
+To compute total effects you do
+```
+double val = sobol.get_total_effect(0);
+```
+
+To compute the main effects you have to give an array of interaction indices, e.g., 
+```
+size_t main_effects[2] = {0,1};
+double val = sobol.get_interaction(2, &main_effect)/var; // first argument is how many interactions, second is the list
+```
 
 
 ### Available functions for computation
@@ -111,37 +152,28 @@ double intval = ft.integrate();
 The following getters and computers are available for the `FunctionTrain` class.
 ```
 // Getters
-        size_t get_dim() const;
-        size_t get_nparams() const;
-        size_t *get_ranks() const;
-        double get_avgrank() const;
-        double get_maxrank() const;
+size_t get_dim() const;
+size_t get_nparams() const;
+size_t *get_ranks() const;
+double get_avgrank() const;
+double get_maxrank() const;
         
 // Computers
-        FunctionTrain &scale(double val);
-        double eval(const double * pt) const;
-        double integrate() const;
-        double integrate_weighted() const;
-        double inner(const FunctionTrain &other) const;
-        double inner_weighted(const FunctionTrain &other) const;
-        FunctionTrain sum(const FunctionTrain &other) const;
-        FunctionTrain product(const FunctionTrain &other) const;
-        FunctionTrain integrate_weighted_subset(size_t ndim_contract, size_t *dims_contract) const;
+FunctionTrain &scale(double val);
+double eval(const double * pt) const;
+double integrate() const;
+double integrate_weighted() const;
+double inner(const FunctionTrain &other) const;
+double inner_weighted(const FunctionTrain &other) const;
+FunctionTrain sum(const FunctionTrain &other) const;
+FunctionTrain product(const FunctionTrain &other) const;
+FunctionTrain integrate_weighted_subset(size_t ndim_contract, size_t *dims_contract) const;
 
-        int save(std::string filename) const;
+int save(std::string filename) const;
 
-        // this = a * x + this
-        void axpy(double a, const FunctionTrain & x, double epsilon, const MultiApproxOpts &opts);
+// this = a * x + this
+void axpy(double a, const FunctionTrain & x, double epsilon, const MultiApproxOpts &opts);
 ```
-    
-
-
-## Namespaces
-
-This wrapper provides two namespaces
-
-1. `c3` which provides the C++ wrappers, in `c3_cpp.h`
-2. `c3core` which provides the C signatures for the wrapped functions, in `core.h`
 
 ## Struct wrapping and lifetimes
 

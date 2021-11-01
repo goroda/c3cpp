@@ -15,14 +15,14 @@ c3::Fwrap::Fwrap(size_t dim, std::string type)
 // Move constructor
 c3::Fwrap::Fwrap(Fwrap && other)
 {
-    std::cout << "Fwrap Move Constructor" << std::endl;
+    // std::cout << "Fwrap Move Constructor" << std::endl;
     fwrap = other.fwrap;
     other.fwrap = nullptr;
 }
 
 c3::Fwrap &c3::Fwrap::operator=(Fwrap && other)
 {
-    std::cout << "Fwrap Move Assignment" << std::endl;
+    // std::cout << "Fwrap Move Assignment" << std::endl;
     if (this != &other) {
         c3core::fwrap_destroy(fwrap);
         fwrap = other.fwrap;
@@ -34,7 +34,7 @@ c3::Fwrap &c3::Fwrap::operator=(Fwrap && other)
 
 c3::Fwrap::~Fwrap()
 {
-    std::cout << "Fwrap Destructor " << std::endl;
+    // std::cout << "Fwrap Destructor " << std::endl;
     c3core::fwrap_destroy(fwrap);
     fwrap = nullptr;
 }
@@ -64,14 +64,14 @@ c3::FunctionMonitor::~FunctionMonitor()
 
 c3::FunctionMonitor::FunctionMonitor(FunctionMonitor && other)
 {
-    std::cout << "FunctionMonitor Move Constructor" << std::endl;
+    // std::cout << "FunctionMonitor Move Constructor" << std::endl;
     monitor = other.monitor;
     other.monitor = nullptr;
 }
 
 c3::FunctionMonitor &c3::FunctionMonitor::operator=(FunctionMonitor && other)
 {
-    std::cout << "FunctionMonitor Move Assignment" << std::endl;
+    // std::cout << "FunctionMonitor Move Assignment" << std::endl;
     if (this != &other) {
         c3core::function_monitor_free(monitor);
         monitor = other.monitor;

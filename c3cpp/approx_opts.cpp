@@ -97,14 +97,14 @@ c3::MultiApproxOpts::MultiApproxOpts(const C3Approx & c3approx) : alloc(false)
 
 // Move constructor
 c3::MultiApproxOpts::MultiApproxOpts(c3::MultiApproxOpts &&other) {
-    std::cout << "MultiApproxOpts Move" << std::endl;
+    // std::cout << "MultiApproxOpts Move" << std::endl;
     opts = other.opts;
     other.opts = nullptr;
 }
 
 // Move assignment
 c3::MultiApproxOpts& MultiApproxOpts::operator=(c3::MultiApproxOpts &&other) {
-    std::cout << "MultiApproxOpts Move Assignment" << std::endl;
+    // std::cout << "MultiApproxOpts Move Assignment" << std::endl;
     if (this != &other) {
         if (alloc == true) {
             c3core::multi_approx_opts_free(opts);
@@ -116,7 +116,7 @@ c3::MultiApproxOpts& MultiApproxOpts::operator=(c3::MultiApproxOpts &&other) {
 }    
     
 c3::MultiApproxOpts::~MultiApproxOpts(){
-    std::cout << "MultiApproxOpts Destructor" << std::endl;
+    // std::cout << "MultiApproxOpts Destructor" << std::endl;
     if (alloc == true) {
         c3core::multi_approx_opts_free(opts);
     }
@@ -135,7 +135,7 @@ void c3::MultiApproxOpts::set_dim(size_t dim, const OneApproxOpts &one_opts){
 
 c3::C3Approx::C3Approx(enum c3core::C3ATYPE type, size_t dim)
 {
-    std::cout << "Approx Constructor" << std::endl;
+    // std::cout << "Approx Constructor" << std::endl;
     opts = c3core::c3approx_create(type, dim);
 }        
 
@@ -148,14 +148,14 @@ c3::C3Approx::C3Approx(enum c3core::C3ATYPE type, size_t dim)
 
 // Move constructor
 c3::C3Approx::C3Approx(c3::C3Approx &&other) {
-    std::cout << "C3Approx Move" << std::endl;
+    // std::cout << "C3Approx Move" << std::endl;
     opts = other.opts;
     other.opts = nullptr;
 }
 
 // Move assignment
 c3::C3Approx& C3Approx::operator=(c3::C3Approx &&other) {
-    std::cout << "C3Approx Move Assignment" << std::endl;
+    // std::cout << "C3Approx Move Assignment" << std::endl;
     if (this != &other) {
         c3core::c3approx_destroy(opts);
         opts = other.opts;
@@ -165,7 +165,7 @@ c3::C3Approx& C3Approx::operator=(c3::C3Approx &&other) {
 }
 
 c3::C3Approx::~C3Approx(){
-    std::cout << "C3Approx Destructor" << std::endl;
+    // std::cout << "C3Approx Destructor" << std::endl;
     c3core::c3approx_destroy(opts);
     opts = nullptr;
 }
