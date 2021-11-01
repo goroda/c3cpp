@@ -29,6 +29,12 @@ namespace c3
         // which handles the destruction
         OpeOpts(enum c3core::poly_type ptype);
 
+        OpeOpts(const OpeOpts &) = delete;
+        OpeOpts &operator=(const OpeOpts & other) = delete;
+        OpeOpts(const OpeOpts &&) = delete;
+        OpeOpts &operator=(const OpeOpts && other) = delete;
+        
+
         void set_lb(double lb);
         void get_lb() const;     
         void set_ub(double ub);
@@ -47,7 +53,10 @@ namespace c3
         struct c3core::OneApproxOpts *opts;
         
         OneApproxOpts(C3Opts &opts_in);
-        
+        OneApproxOpts(const OneApproxOpts &) = delete;
+        OneApproxOpts &operator=(const OneApproxOpts & other) = delete;
+        OneApproxOpts(const OneApproxOpts &&) = delete;
+        OneApproxOpts &operator=(const OneApproxOpts && other) = delete;        
         ~OneApproxOpts();
 
         void set_nparams(size_t nparams);
@@ -64,16 +73,11 @@ namespace c3
         C3Approx(enum c3core::C3ATYPE type, size_t dim);
 
         // Copy Constructor: initialize previously uninitialized
-        C3Approx(const C3Approx &other);
-
-
-        // Copy assignment operator: replace previously initialized
+        C3Approx(const C3Approx &other) = delete;
         C3Approx& operator=(const C3Approx &other) =delete ;
 
         // Move constructor
         C3Approx(C3Approx &&other);
-
-        // Move assignment
         C3Approx& operator=(C3Approx &&other);
             
         ~C3Approx();
@@ -103,19 +107,14 @@ namespace c3
 
         MultiApproxOpts(struct c3core::MultiApproxOpts * opts): opts(opts), alloc(false) {};
         
-        MultiApproxOpts(const C3Approx & c3approx);
+        MultiApproxOpts(const C3Approx & c3approx) ;
 
-        // The below constructurs employ shallow copies, not deep
-        // Copy Constructor: initialize previously uninitialized
-        MultiApproxOpts(const MultiApproxOpts &other);
+        // Copy 
+        MultiApproxOpts(const MultiApproxOpts &other) = delete;
+        MultiApproxOpts& operator=(const MultiApproxOpts &other) = delete;
 
-        // Copy assignment operator: replace previously initialized
-        MultiApproxOpts& operator=(const MultiApproxOpts &other);
-
-        // Move constructor
+        // Move 
         MultiApproxOpts(MultiApproxOpts &&other);
-
-        // Move assignment
         MultiApproxOpts& operator=(MultiApproxOpts &&other);
 
         void set_dim(size_t dim, const OneApproxOpts &opts);

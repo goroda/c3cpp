@@ -5,11 +5,13 @@ namespace c3core
 {
     extern "C" {
 
-        enum poly_type {LEGENDRE, CHEBYSHEV, HERMITE, STANDARD, FOURIER};
-        enum C3ATYPE { CROSS, REGRESS, C3UNSPEC };
+        enum poly_type      {LEGENDRE, CHEBYSHEV, HERMITE, STANDARD, FOURIER};
+        enum C3ATYPE        {CROSS, REGRESS, C3UNSPEC };
         enum function_class {PIECEWISE, POLYNOMIAL, CONSTELM, LINELM, KERNEL};
-        enum c3opt_alg {BFGS, LBFGS, BATCHGRAD, BRUTEFORCE, SGD};
-
+        enum c3opt_alg      {BFGS, LBFGS, BATCHGRAD, BRUTEFORCE, SGD};
+        enum REGTYPE        {ALS,AIO,REGNONE};
+        enum REGOBJ         {FTLS,FTLS_SPARSEL2,REGOBJNONE};
+        
         struct OpeOpts;        
         struct OneApproxOpts;
         struct MultiApproxOpts;
@@ -18,6 +20,8 @@ namespace c3core
         struct Fwrap;
         struct FunctionMonitor;
         struct c3Opt;
+        struct FTRegress;
+        struct C3SobolSensitivity;
         
         // Not sure about below
         void function_train_sobol_sensitivities(const struct FunctionTrain *,double*,double*,size_t);
@@ -125,6 +129,50 @@ namespace c3core
         void c3opt_ls_set_maxiter(struct c3Opt *, size_t);
         void c3opt_set_absxtol(struct c3Opt *, double);
         void c3opt_free(struct c3Opt *);
+
+        // Sobol indices
+        struct C3SobolSensitivity *
+        c3_sobol_sensitivity_calculate(const struct FunctionTrain * ft, size_t order);
+        void c3_sobol_sensitivity_free(struct C3SobolSensitivity * si);
+        double c3_sobol_sensitivity_get_variance(const C3SobolSensitivity * sobol);
+        double c3_sobol_sensitivity_get_total(const C3SobolSensitivity * sobol, size_t var);
+        double c3_sobol_sensitivity_get_interaction(
+            const C3SobolSensitivity * sobol, size_t ninteract, const size_t * vars);
+        
+
+        
+        
+
+        // regression -TODO
+        struct FTRegress * ft_regress_alloc(size_t dim, struct MultiApproxOpts *,size_t * ranks);
+        size_t ft_regress_get_dim(const struct FTRegress *);
+        void ft_regress_set_adapt(struct FTRegress *, int);
+        void ft_regress_set_maxrank(struct FTRegress *, size_t);
+        void ft_regress_set_kickrank(struct FTRegress *, size_t);
+        void ft_regress_set_roundtol(struct FTRegress *, double);
+        void ft_regress_set_kfold(struct FTRegress *, size_t);
+        void ft_regress_set_finalize(struct FTRegress *, int);
+        void ft_regress_set_opt_restrict(struct FTRegress *, int);
+
+        void ft_regress_free(struct FTRegress *);
+        void ft_regress_reset_param(struct FTRegress*, struct MultiApproxOpts *, size_t *);
+        void ft_regress_set_type(struct FTRegress *, enum REGTYPE);
+        void ft_regress_set_obj(struct FTRegress *, enum REGOBJ);
+        void ft_regress_set_alg_and_obj(struct FTRegress *, enum REGTYPE, enum REGOBJ);
+        void ft_regress_set_stoch_obj(struct FTRegress *, int);
+
+        void ft_regress_set_als_conv_tol(struct FTRegress *, double);
+        void ft_regress_set_max_als_sweep(struct FTRegress *, size_t);
+        void ft_regress_set_verbose(struct FTRegress *, int);
+        void ft_regress_set_regularization_weight(struct FTRegress *, double);
+        double ft_regress_get_regularization_weight(const struct FTRegress *);
+        double * ft_regress_get_params(struct FTRegress *, size_t *);
+        void ft_regress_update_params(struct FTRegress *, const double *);
+
+        void ft_regress_set_seed(struct FTRegress *, unsigned int);
+
+        struct FunctionTrain *
+        ft_regress_run(struct FTRegress *,struct c3Opt *,size_t,const double* xdata, const double * ydata);
     }
 
 

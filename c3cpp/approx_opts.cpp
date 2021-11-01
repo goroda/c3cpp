@@ -66,24 +66,6 @@ size_t c3::OneApproxOpts::get_nparams() const {
     return c3core::one_approx_opts_get_nparams(opts);
 }
 
-// Copy Constructor: initialize previously uninitialized
-c3::MultiApproxOpts::MultiApproxOpts(const c3::MultiApproxOpts &other) {
-    opts = other.opts;
-    alloc = false;
-}
-
-
-// Copy assignment operator: replace previously initialized
-c3::MultiApproxOpts& MultiApproxOpts::operator=(const c3::MultiApproxOpts &other){
-
-    if (alloc == true) {
-        c3core::multi_approx_opts_free(opts);
-        alloc = false;
-    }
-    opts = other.opts;
-    return *this;
-}
-
 c3::MultiApproxOpts::MultiApproxOpts(size_t dim) {
     opts = c3core::multi_approx_opts_alloc(dim);
     alloc = true;
@@ -93,6 +75,25 @@ c3::MultiApproxOpts::MultiApproxOpts(const C3Approx & c3approx) : alloc(false)
 {
     opts = c3core::c3approx_get_approx_args(c3approx.opts);
 }
+
+
+// // Copy Constructor: initialize previously uninitialized
+// c3::MultiApproxOpts::MultiApproxOpts(const c3::MultiApproxOpts &other) {
+//     opts = other.opts;
+//     alloc = false;
+// }
+
+
+// // Copy assignment operator: replace previously initialized
+// c3::MultiApproxOpts& MultiApproxOpts::operator=(const c3::MultiApproxOpts &other){
+
+//     if (alloc == true) {
+//         c3core::multi_approx_opts_free(opts);
+//         alloc = false;
+//     }
+//     opts = other.opts;
+//     return *this;
+// }
 
 // Move constructor
 c3::MultiApproxOpts::MultiApproxOpts(c3::MultiApproxOpts &&other) {
@@ -121,6 +122,9 @@ c3::MultiApproxOpts::~MultiApproxOpts(){
     }
     opts = nullptr;
 }
+
+
+
 
 void c3::MultiApproxOpts::set_dim(size_t dim, const OneApproxOpts &one_opts){
     c3core::multi_approx_opts_set_dim(opts, dim, one_opts.opts);

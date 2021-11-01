@@ -1,5 +1,5 @@
-CXX = g++
-# CXX = g++-8
+# CXX = g++
+CXX = g++-8
 CFLAGS = -g -Wall -O3 -std=c++11 -fPIC
 
 LLOC = ../../c3/build/c3 
@@ -8,13 +8,13 @@ LIB = c3
 TARGET = libc3cpp.so
 
 # the following works on a mac
-# LALOC = /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A
-# BLAS = BLAS
-# LAPACK = LAPACK
+LALOC = /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A
+BLAS = BLAS
+LAPACK = LAPACK
 
-LALOC = /usr/lib/x86_64-linux-gnu
-BLAS = blas
-LAPACK = lapack
+# LALOC = /usr/lib/x86_64-linux-gnu
+# BLAS = blas
+# LAPACK = lapack
 
 
 # temp : main.o function_train.o approx_opts.o functions.o utils.o 
@@ -27,8 +27,8 @@ MAC_NAME=libc3cpp.so
 # MAC_INSTALL= -dynamiclib -install_name @rpath../$(MAC_NAME) -o $(MAC_NAME)
 UNIX_INSTALL = -shared -o $(MAC_NAME)
 
-lib : function_train.o approx_opts.o functions.o optimize.o utils.o 
-	$(CXX)  $(CFLAGS) function_train.o functions.o approx_opts.o utils.o optimize.o -L$(LLOC) -l$(LIB) -L$(LALOC) -l$(BLAS) -l$(LAPACK) $(UNIX_INSTALL) && cp $(MAC_NAME) ../
+lib : sobol.o function_train.o approx_opts.o functions.o optimize.o utils.o 
+	$(CXX)  $(CFLAGS) sobol.o function_train.o functions.o approx_opts.o utils.o optimize.o -L$(LLOC) -l$(LIB) -L$(LALOC) -l$(BLAS) -l$(LAPACK) $(UNIX_INSTALL) && cp $(MAC_NAME) ../
 
 function_train.o: 
 	$(CXX) $(CFLAGS) -c function_train.cpp 
@@ -41,6 +41,9 @@ functions.o:
 
 optimize.o: 
 	$(CXX) $(CFLAGS) -c optimize.cpp
+
+sobol.o: 
+	$(CXX) $(CFLAGS) -c sobol.cpp
 
 utils.o: 
 	$(CXX) $(CFLAGS) -c utils.cpp 

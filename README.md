@@ -1,12 +1,12 @@
 # C3CPP
 C++11 wrapper for the compressed-continuous-computation (c3) [library](https://github.com/goroda/compressed-continuous-computation). This is intended to be a very thin wrapper. It has two goals:
 
-1. Provides lifetime management to avoid manual memory allocation and deallocation 
-2. To wrap c3 in a namespace to avoid conflicts when using it in C++ code. 
+1. Provide lifetime management to avoid manual memory allocation and deallocation.
+2. Wrap c3 in a namespace to avoid conflicts when using it in C++ code. 
 
 ## Installation 
 
-1. Install c3 and cd into the directory
+1. Install c3 and ~cd~ into the directory
 ```
 git clone https://github.com/goroda/compressed-continuous-computation c3
 cd c3
@@ -27,46 +27,88 @@ cd c3cpp
 5. Run `make all`
 6. Check if it works `./c3cpp_tests`
 
+## Examples and tests
+
+
+## Namespaces
+
+This wrapper provides two namespaces
+
+1. `c3` which provides the C++ wrappers, in `c3_cpp.h`
+2. `c3core` which provides the C signatures for the wrapped functions, in `core.h`
 
 ## Struct wrapping and lifetimes
 
 Here we document the status of each wrapped struct. Below we document whether copy and move constructors and assignment operators have been created. For each operation we either implement both constructor and assignment, or neither. The current implementation handles the same usage patterns as the underlying C code. In other words, if there is no copying or moving done in normal usage of C3, then these operations are not supported in C3CPP.
 
-
-### `struct FunctionTrain` &rarr; FunctionTrain
-Operation | Status 
-:-------- | :----------
-Copy  | :heavy_check_mark:
-Move  | :heavy_check_mark:
-
-### `struct OpeOpts` &rarr; OpeOpts
-Operation | Status 
-:-------- | :----------
-Copy  | :x:
-Move  | :x:
-
-### `struct OneApproxOpts` &rarr; OneApproxOpts
-Operation | Status 
-:-------- | :----------
-Copy  | :x:
-Move  | :x:
+In the tables below we also provide the /public/ member variable that provides the raw pointer to the unwrapped struct. This is useful if one wants to call functions that have not yet been wrapped.
 
 
-### `struct C3Approx` &rarr;  C3Approx
+### `struct FunctionTrain` &rarr; `FunctionTrain`
+| Operation | Status             |
+|-----------|--------------------|
+| Copy      | :heavy_check_mark: |
+| Move      | :heavy_check_mark: |
+| var name  | `ft`               |
+
+
+### `struct OpeOpts` &rarr; `OpeOpts`
+| Operation | Status |
+|-----------|--------|
+| Copy      | :x:    |
+| Move      | :x:    |
+| var name  | `opts` |
+
+### `struct OneApproxOpts` &rarr; `OneApproxOpts`
+| Operation | Status |
+|-----------|--------|
+| Copy      | :x:    |
+| Move      | :x:    |
+| var name  | `opts` |
+
+### `struct C3Approx` &rarr;  `C3Approx`
 | Operation | Status             |
 |-----------|--------------------|
 | Copy      | :x:                |
 | Move      | :heavy_check_mark: |
+| var name  | `opts`             |
 
-### `struct MultiApproxOpts` &rarr;  MultiApproxOpts
-
+### `struct MultiApproxOpts` &rarr;  `MultiApproxOpts`
 | Operation | Status             |
 |-----------|--------------------|
 | Copy      | :x:                |
 | Move      | :heavy_check_mark: |
+| var name  | `opts`             |
 
 
+### `struct Fwrap` &rarr;  `Fwrap`
+| Operation | Status             |
+|-----------|--------------------|
+| Copy      | :x:                |
+| Move      | :heavy_check_mark: |
+| var name  | `fwrap`            |
 
+### `struct FunctionMonitor` &rarr;  `FunctionMonitor`
+| Operation | Status             |
+|-----------|--------------------|
+| Copy      | :x:                |
+| Move      | :heavy_check_mark: |
+| var name  | `monitor`          |
+
+
+### `struct C3Opt` &rarr;  `C3Opt`
+| Operation | Status |
+|-----------|--------|
+| Copy      | :x:    |
+| Move      | :x:    |
+| var name  | `opt`  |
+
+### `struct C3SobolSensitivity` &rarr;  `SobolIndices`
+| Operation | Status             |
+|-----------|--------------------|
+| Copy      | :x:                |
+| Move      | :heavy_check_mark: |
+| var name  | `sobol`            |
 
 ## LICENSE
 BSD-3 

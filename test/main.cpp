@@ -9,7 +9,6 @@ int sin10d(size_t n, const double * x, double * out, void * args)
 {
     
     (void)(args);
-
     for (size_t jj = 0; jj < n; jj++ ){
         out[jj] = 0.0;
         for (size_t ii = 0; ii < 10; ii++){
@@ -43,7 +42,6 @@ int main(int argc, char *argv[])
     c3::Fwrap fw(dim, "general-vec");
     fw.set_fvec(&sin10d, nullptr);
 
-    
     c3::OpeOpts opts(c3core::LEGENDRE);
     opts.set_lb(lb);
     opts.set_ub(ub);
@@ -74,6 +72,12 @@ int main(int argc, char *argv[])
     }
     delete[] start;
 
+
+
+    // TODO:
+    // Evaluation and Sobol Indices
+
+    
     // the below should not be possible
     // struct c3core::OpeOpts * opts_c3 = c3core::ope_opts_alloc(c3core::LEGENDRE);
 

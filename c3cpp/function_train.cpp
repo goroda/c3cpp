@@ -100,5 +100,5 @@ int c3::FunctionTrain::save(std::string filename) const {
 
 void c3::FunctionTrain::axpy(double a, const FunctionTrain & x, double epsilon, const MultiApproxOpts &opts) {
 
-    c3core::c3axpy(a, x.ft, &ft, epsilon, opts->opts);
+    c3core::c3axpy(a, x.ft, &ft, epsilon, opts.opts);
 }
