@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     size_t init_rank = 2;
     double ** start = new double*[dim];
     for (size_t ii = 0; ii < dim; ii++) {
-        start[ii] = new double[dim];
+        start[ii] = new double[init_rank];
         linspace(lb, ub, init_rank, start[ii]);
         approx.set_approx_opts_dim(ii, qmopts);
     }
