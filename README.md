@@ -253,3 +253,4 @@ BSD-3
 
 ## Author
 Alex Gorodetsky alex@alexgorodetsky.com
+Copyright (c) 2021, Alex Gorodetsky
