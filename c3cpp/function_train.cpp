@@ -12,7 +12,7 @@ c3::FunctionTrain::FunctionTrain(const c3::C3Approx &approx,
 }
 
 c3::FunctionTrain& c3::FunctionTrain::operator=(const FunctionTrain &other){
-    std::cout << "FunctionTrain Assignment" << std::endl;
+    // std::cout << "FunctionTrain Assignment" << std::endl;
     if (this != &other) {
         c3core::function_train_free(ft);
         ft = c3core::function_train_copy(other.ft);
@@ -22,14 +22,14 @@ c3::FunctionTrain& c3::FunctionTrain::operator=(const FunctionTrain &other){
 
 // Move constructor
 c3::FunctionTrain::FunctionTrain(FunctionTrain &&other) {
-    std::cout << "FunctionTrain Move" << std::endl;
+    // std::cout << "FunctionTrain Move" << std::endl;
     ft = other.ft;
     other.ft = nullptr;
 }
 
 // Move assignment
 c3::FunctionTrain & c3::FunctionTrain::operator=(FunctionTrain &&other) {
-    std::cout << "FunctionTrain Move Assignment" << std::endl;
+    // std::cout << "FunctionTrain Move Assignment" << std::endl;
     if (this != &other) {
         c3core::function_train_free(ft);
         ft = other.ft;
@@ -39,7 +39,7 @@ c3::FunctionTrain & c3::FunctionTrain::operator=(FunctionTrain &&other) {
 }    
     
 c3::FunctionTrain::~FunctionTrain(){
-    std::cout << "FunctionTrain Destructor" << std::endl;
+    // std::cout << "FunctionTrain Destructor" << std::endl;
     c3core::function_train_free(ft);
     ft = nullptr;
 }

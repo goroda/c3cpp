@@ -35,19 +35,20 @@ int main(int argc, char *argv[])
 
     std::cout << "Hello World!" << std::endl;
 
-    double lb = 0.0;
-    double ub = 1.0;
-    size_t dim = 10;
 
+    size_t dim = 10;
     c3::Fwrap fw(dim, "general-vec");
     fw.set_fvec(&sin10d, nullptr);
 
+
+    double lb = 0.0;
+    double ub = 1.0;    
     c3::OpeOpts opts(c3core::LEGENDRE);
     opts.set_lb(lb);
     opts.set_ub(ub);
+    
     c3::OneApproxOpts qmopts(opts);    
     c3::C3Approx approx(c3core::CROSS, dim);
-
     int verbose = 1;
     size_t init_rank = 2;
     double ** start = new double*[dim];

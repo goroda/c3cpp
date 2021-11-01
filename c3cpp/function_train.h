@@ -45,18 +45,13 @@ namespace c3
         double get_maxrank() const;
 
         FunctionTrain &scale(double val);
-
         double eval(const double * pt) const;
         double integrate() const;
         double integrate_weighted() const;
-    
         double inner(const FunctionTrain &other) const;
         double inner_weighted(const FunctionTrain &other) const;
-
         FunctionTrain sum(const FunctionTrain &other) const;
-
         FunctionTrain product(const FunctionTrain &other) const;
-
         FunctionTrain integrate_weighted_subset(size_t ndim_contract, size_t *dims_contract) const;
 
         int save(std::string filename) const;
